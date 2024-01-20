@@ -41,8 +41,14 @@ whitelist - websites that are allowed to make requests to
 
 app.use(cors(corsOptions));
 
+
+user model and video user 
+
 7.wrap in try .. catch or promises 
 
 
-express , mongoose , dotenv
+8 . direct  encryption is not possible so we use hooks 
+//bcryptjs -- hash passwords 
+//jwt - tokens (jsonwebtokens)   ---jwt.io
+express , mongoose , dotenv , bcryptjs ,mongoose-aggregate-paginate 
 custom error , custom routes , middleware 
