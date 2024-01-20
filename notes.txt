@@ -1,0 +1,48 @@
+ 1."scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }, change to "dev" : "nodemon src/index.js"
+
+  2.folders
+  {
+    Controllers:This folder typically contains modules or files that handle incoming HTTP requests, interact with the model (data), and send the appropriate response back to the client. 
+    Models: The models folder holds files that define the data structures and interact with the database. 
+  Routes
+  Middleware 
+  utils-that provide commonly used functionality across different parts of the application. Utilities can help avoid code duplication and improve maintainability.
+  }
+
+ 3. require('dotenv').config({path:'./env'})-- to run enviroment variables 
+ 
+ 4. restart the server everytime there is a change in the environment variables
+  remove the net/ - net 
+
+  5.custom errors and custom api - seperate folders 
+
+  6.req.params-
+  req.body
+  req.cookies
+6.learn axios , proxy 
+
+
+cors- settings change for resource sharing 
+      app.use(cors())
+cors- cross orgin 
+      differ requests can be send from diff origins to servers, (url , port) - cors 
+      whitelist - domain / api whitelist
+      define the origin
+CORS_ORIGIN=* // request from any where 
+whitelist - websites that are allowed to make requests to 
+/// const corsOptions = {
+    origin: 'http://example.com', // Allow requests from this origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
+    credentials: true, // Allow including credentials in cross-origin requests
+    optionsSuccessStatus: 204, // Set the preflight response status code
+};
+
+app.use(cors(corsOptions));
+
+7.wrap in try .. catch or promises 
+
+
+express , mongoose , dotenv
+custom error , custom routes , middleware 

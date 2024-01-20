@@ -1,0 +1,2 @@
+.gitignore genertor - to generate gitigore files
+https://www.toptal.com/developers/gitignore/api/node
