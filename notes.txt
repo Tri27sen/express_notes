@@ -47,8 +47,18 @@ user model and video user
 7.wrap in try .. catch or promises 
 
 
-8 . direct  encryption is not possible so we use hooks 
+8 . direct  encryption is not possible so we use hooks --- pre middleware 
+
+
+9.Hooks are functions that Mongoose invokes before or after specific events, such as document validation, saving, or removing.
+Usage: You can use hooks to add custom logic to model events
+
+
+pre - executed before
 //bcryptjs -- hash passwords 
 //jwt - tokens (jsonwebtokens)   ---jwt.io
+jwt - beare token 
+
+
 express , mongoose , dotenv , bcryptjs ,mongoose-aggregate-paginate 
 custom error , custom routes , middleware 

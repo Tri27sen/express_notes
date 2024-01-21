@@ -52,4 +52,18 @@ refreshToken :{
   timestamps:true
 })
 
+
+
+// direct callbacks are not used becoz  , save event working on user 
+
+userSchema.pre('save',async function(next) {
+  if(!this.isModified('password')) return next();
+
+  this.password = bcrypt.hash(this.password,10)
+  next()
+})//This middleware is set to run before the save_(event) operation on a userSchema
+userSchema.methods.isPasswordCorrect = async function(password){
+   return awaitbcrypt.compare(password, this.password)
+}
+
 exports.userSchema=mongoose.model('User',userSchema)
