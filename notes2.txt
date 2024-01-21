@@ -1,0 +1,12 @@
+JSON Web Tokens (JWTs) are widely used for authentication and information exchange between parties. Here are some important things to know about JWTs: -- stateless authentication.
+
+Structure:
+
+A JWT consists of three parts: header, payload, and signature.
+
+(header.payload.signature).
+1.header: type , algorithm 
+2.payload: claims(statements abt user) and data 
+         iss , sub , aud , exp,iast 
+3.signature:The signature is used to verify that the sender of the JWT is who it says it is and to ensure that the message wasn't changed along the way.
+The signature is created by encoding the header and payload, hashing the result, and then encrypting the hash using the secret key (for HMAC algorithms) or private key (for RSA/ECDSA algorithms).

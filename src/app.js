@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors')
 const cookieparser = require('cookie-parser')
 //cookieparser - server can use and access users cookies , crude operations , store secure cookies only by server
-const { VirtualType } = require('mongoose')
+const { VirtualType }= require('mongoose')
 app.use(cors({
   origin: process.env.CORS_ORIGIN, 
   credentials :true

@@ -63,7 +63,39 @@ userSchema.pre('save',async function(next) {
   next()
 })//This middleware is set to run before the save_(event) operation on a userSchema
 userSchema.methods.isPasswordCorrect = async function(password){
-   return awaitbcrypt.compare(password, this.password)
+   return await bcrypt.compare(password, this.password)
 }
 
-exports.userSchema=mongoose.model('User',userSchema)
+
+//encoding a set of claims (information about a user or another entity) into a string.
+//const token = jwt.sign(payload, secretKey, options);
+userSchema.methods.generateAccessToken = function(){
+   const key = jwt.sign({
+   _id:this._id,
+   email:this.email,
+   username:this.username,
+   fullName:this.fullName
+},
+process.env.ACCESS_TOKEN_SECRET,
+{
+  expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+}
+)
+return key 
+}
+userSchema.methods.generateRefreshToken = function()
+{
+  
+  const key_refresh = jwt.sign(
+{
+  _id:this._id,
+},
+process.env.ACCESS_TOKEN_SECRET,
+{
+expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+}
+)
+return key_refresh }
+
+const User = mongoose.model("User",userSchema)
+exports.User = User 

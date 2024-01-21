@@ -4,7 +4,7 @@
 
   2.folders
   {
-    Controllers:This folder typically contains modules or files that handle incoming HTTP requests, interact with the model (data), and send the appropriate response back to the client. 
+    Controllers:This folder typically contains modules or files that handle incoming HTTP requests, interact with the model (data), and send the appropriate response back to the client. (req,res,next)
     Models: The models folder holds files that define the data structures and interact with the database. 
   Routes
   Middleware 
@@ -60,5 +60,24 @@ pre - executed before
 jwt - beare token 
 
 
+
+10.const token = jwt.sign(payload, secretKey, options);
+Explanation of the parameters:
+
+payload: This is an object containing the claims or information you want to encode in the JWT. It can include things like user ID, username, roles, or any other relevant information.
+
+secretKey: This is a secret key used to sign the JWT. It should be kept secure, as it's used to verify the integrity of the token.
+
+options: This is an optional parameter that can include additional settings for the token, such as the expiration time (expiresIn). The expiresIn option specifies the expiration time of the token, and it can be expressed in seconds (e.g., '1h' for 1 hour).
+The resulting JWT can be sent to clients or stored on the server.
+
+
+
+11. file handling - 3rd party , aws 
+
+
 express , mongoose , dotenv , bcryptjs ,mongoose-aggregate-paginate 
 custom error , custom routes , middleware 
+
+multer --- middleware 
+       inject it whereever we need to upload file 
