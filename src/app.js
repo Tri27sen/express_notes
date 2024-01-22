@@ -15,4 +15,14 @@ app.use(express.urlencoded({extended:true}))
 
 app.use(express.static("public"))
 app.use(cookieparser())
+
+
+
+//routes 
+
+const userRouter = require('./routes/user.routes') 
+
+//declaration 
+
+app.use("/api/v1/users" , userRouter)
 module.exports = app 
