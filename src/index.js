@@ -6,17 +6,20 @@
 
 require('dotenv').config({path:'./env'})
 const mongoose = require('mongoose')
+const { app } = require('./app.js');
 const db_name =require('./constants.js')
 const express = require('express')
-const app = express()
-const connectdb=require('./db/index.js')
-const { error } = require('console')
 
+const connectdb=require('./db/index.js')
+
+
+const { error } = require('console')
+console.log("hello from index.js")
 connectdb()
 .then(()=>{
   app.on("error",(err)=>{
     console.error("error message",err);
-    throw error
+    throw err;
   }),
 
   app.listen(process.env.port || 8000 , ()=>{

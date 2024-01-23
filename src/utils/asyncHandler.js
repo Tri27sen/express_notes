@@ -2,8 +2,8 @@
 
 }
 */
-exports.asyncHandler=asyncHandler
 /*
+
 // using try .... catch
 const asyncHandler = (fn) => async (req , res , next ) => {
   try{
@@ -18,10 +18,12 @@ const asyncHandler = (fn) => async (req , res , next ) => {
 }
 
 constructor() -- parameters are customizable 
-
 */
+
 const asyncHandler = (requestHandler ) =>{
-  (req,res,next) =>{
+  return (req,res,next) =>{
     Promise.resolve(requestHandler(req,res,next)).catch((err) => next(err))
   }
 }
+console.log("promise returned...")
+exports.model = asyncHandler

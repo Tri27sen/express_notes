@@ -25,7 +25,7 @@ class ApiError extends Error{
   }
 }
 
-exports.ApiError= ApiError
+exports.model= ApiError
 /*
 class ApiError extends Error {
   constructor(message, code) {

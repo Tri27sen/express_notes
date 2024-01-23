@@ -1,3 +1,7 @@
+
+npm run dev 
+
+
  1."scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   }, change to "dev" : "nodemon src/index.js"
@@ -75,9 +79,25 @@ The resulting JWT can be sent to clients or stored on the server.
 
 11. file handling - 3rd party , aws 
 
+12. register user 
+    a) get user information  --- request 
+    b)validation - empty , correct formate (middleware)
+    c)check if user unique - email , name 
+    d)check for images , avator 
+    e)upload to cloudinary , avator 
+    f)create user object --- craete entry in db 
+    g) remove passwords 
+    h)refresh token field from response 
+    i)check for user creation 
+    j)return res 
 
+
+params , body --- both can be used to send data 
 express , mongoose , dotenv , bcryptjs ,mongoose-aggregate-paginate 
 custom error , custom routes , middleware 
 
 multer --- middleware 
        inject it whereever we need to upload file 
+
+
+what are the types of error i should write in my utils 

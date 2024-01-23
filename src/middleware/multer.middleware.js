@@ -11,4 +11,4 @@ const storage = multer.diskStorage({
 }) //cb---callback 
 
 const upload = multer({ storage: storage })
-exports.upload=upload 
+module.exports = { upload };

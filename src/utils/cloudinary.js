@@ -23,5 +23,6 @@ const uploadOnCloudiary = async (localFilePath) =>{
     return null
   }
 }
-exports.uploadOnCloudiary= uploadOnCloudiary
+console.log("cloudinary working .....")
+module.exports  = uploadOnCloudiary
 //method - parameter - lpcal file path - upload if uploaded successfully then unlibk it 
