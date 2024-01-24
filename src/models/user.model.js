@@ -23,7 +23,7 @@ email:{
   lowercase: true , 
   trim : true,
 },
-fullname:{
+fullName:{
   type:String ,
   required:true,
   trim : true,
@@ -98,4 +98,4 @@ expiresIn: process.env.ACCESS_TOKEN_EXPIRY
 return key_refresh }
 
 const User = mongoose.model("User",userSchema)
-exports.model=User //
+module.exports = User;//

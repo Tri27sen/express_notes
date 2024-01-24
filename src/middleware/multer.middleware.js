@@ -9,6 +9,6 @@ const storage = multer.diskStorage({
     cb(null, file.originalname)
   }
 }) //cb---callback 
-
+console.log("multer working...")
 const upload = multer({ storage: storage })
 module.exports = { upload };

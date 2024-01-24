@@ -25,7 +25,7 @@ app.use(cookieparser())
 const userRouter = require('./routes/user.routes') 
 
 //declaration 
-
+console.log("using userRouter : ")
 app.use("/api/v1/users" , userRouter) // userRouter is the middleware 
 
 
