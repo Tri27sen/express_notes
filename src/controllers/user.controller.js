@@ -2,8 +2,28 @@ const { model: asyncHandler } = require("../utils/asyncHandler.js");
 const ApiError = require('../utils/apierror.js')
 const User = require('../models/user.model.js')
 const uploadOnCloudiary = require('../utils/cloudinary.js')
+const ApiResponse = require('../utils/apiResponse.js');
+const { options } = require("../routes/user.routes.js");
+const Cookie=require("cookie-parser")
 
-const ApiResponse = require('../utils/apiResponse.js')
+
+//User - mongodb model , user - findById(userId)
+const generate_Access_Refresh_token = async (userId) => {
+  try{
+
+    const user = await User.findById(userId)
+    const accessToken = user.generateAccessToken()
+    const refreshToken = user.generateRefreshToken()
+    user.refreshToken = refreshToken
+    await user.save({validateBeforeSve : false })
+    console.log(accessToken, refreshToken)
+    return {accessToken, refreshToken}
+  }catch(error){
+    throw new ApiError(500,"something went wrong while generating tokens ")
+  }
+}
+
+
 
  const registerUser = asyncHandler(async (req,res) =>{
    
@@ -73,7 +93,91 @@ return res.status(201).json(
 )
  }
   )
-module.exports ={registerUser} //module.exports =s
+
+
+/*
+req body-> data 
+access based on username or email 
+find the user 
+passwaord check 
+acces and refresh token 
+send cookies - refresh tokens 
+
+*/
+
+
+
+const loginUser = asyncHandler(async(req , res) =>{
+  const {email , username , password} = req.body 
+
+  if(!username || !email){
+    throw new ApiError(400 , " email or username is required")
+  }
+  const user = await User.findOne({
+    $or :[{username} , {email}]
+  })
+if(!user){
+  throw new ApiError(404 , "User already exsist")
+}
+const ispasswordvalid = await user.isPasswordCorrect(password) 
+if (!ispasswordvalid){
+  throw new ApiError(401 , "password incorrect ")
+}
+
+
+const {accessToken, refreshToken} = await generate_Access_Refresh_token(user._id)
+const logged_in_User = await User.findById(user._id).select("-password -refreshToken")
+
+//cookies can be modified from the front as well , to allow only server modification use httpOnly 
+const options ={
+  httpOnly : true ,
+  secure : true 
+}
+  return res
+  .status(200)
+  .cookie("accessToken",accessToken , options)
+  .cookie("refreshToken",refreshToken , options)
+  .json(
+    new ApiResponse(
+      200 ,
+      {
+        user:logged_in_User,accessToken,refreshToken
+      },
+      "user logged in successfully ... itachi uchhiha lives :> "
+    )
+  )
+}
+)
+
+
+
+
+
+//remove cookies  , middleware 
+const logoutuser = asyncHandler(async(req , res) =>{
+  //req.user._id
+  const logoutdetails = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set :{
+        refreshToken:undefined
+      }
+    },
+    {
+      new: true // sets the new conditions 
+    }
+  )
+  options ={
+    httpOnly : true ,
+    secure : true 
+  }
+  return res
+  .status(200)
+  .clearCookie("accessToken" , options)
+  .clearCookie("refresToken" , options)
+
+})
+module.exports ={registerUser , loginUser , logoutuser} //module.exports =s
 
 
 /*if (
