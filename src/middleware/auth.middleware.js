@@ -5,6 +5,7 @@
 const ApiError = require("../utils/apierror")
 const {model: asyncHandler }= require("../utils/asyncHandler")
 const jwt = require("jsonwebtoken")
+const User = require('../models/user.model.js')
 /*
 
 a)Token Extraction:
@@ -28,10 +29,9 @@ if(!user){
   throw new ApiError(401 , "invalid access token ")
 }
 req.user = user ;
+
 console.log("request body ---------------------------")
-console.log(req)
-console.log("request body ---------------------------")
-console.log(req.user)
+//console.log(req.user)
 next()
   }
   catch (error){
