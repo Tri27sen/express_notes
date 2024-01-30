@@ -285,7 +285,8 @@ const updateUserAvator =  asyncHandler ( async (req, res ) => {
   if(!avator.url){
     throw new ApiError(400 , "error while uploading avator from cloudinary ")
   }
-
+    
+  avator.url.unlinkSync(avatorlocalpath) 
   await User.findByIdAndUpdate(
     req.user?._id , {
       $set:{
@@ -310,7 +311,7 @@ const updateUserAvator =  asyncHandler ( async (req, res ) => {
     if(!coverImage.url){
       throw new ApiError(400 , "error while uploading cover from cloudinary ")
     }
-  
+    coverImage.url.unlinkSync(coverlocalpath) 
     await User.findByIdAndUpdate(
       req.user?._id , {
         $set:{
