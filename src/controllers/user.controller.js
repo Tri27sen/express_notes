@@ -8,7 +8,7 @@ const cookie = require("cookie-parser")
 const {verifyJWT} = require("../middleware/auth.middleware.js")
 
 //User - mongodb model , user - findById(userId)
-const generate_Access_Refresh_token = async (userId) => {
+const generate_Access_Refresh_token = async (userId) => { // whenever we want to generate access and refresh tokens 
   try{
     console.log("generating access and refresh tokens")
     const user = await User.findById(userId)
@@ -225,11 +225,133 @@ const refreshAccessToken = asyncHandler( async ( req , res)=>{
 }
 
 })
+const changeCurrentPassword = asyncHandler(async(req,res) => {
+  const {oldpassword , newpassword   } = req.body
+  /*
+  if(!(newpassword === confPassword)){
+
+  }*/
+  const user = await User.findById(req.user?._id)
+  const isPasswordCorrect = user.isPasswordCorrect(oldpassword) // true / false
+
+  if(!isPasswordCorrect){
+    throw new ApiError(400 , "Invalid old password")
+  }
+  user.password = newpassword
+  // .pre will run and hash it 
+  await user.save({validateBeforeSave:false})
+
+  return res 
+  .status(200)
+  .json(new ApiResponse(200 , {} , "password changed successfully "))
+})
  
-module.exports ={registerUser , loginUser , logoutuser, refreshAccessToken} //module.exports =s
+const getCurrentUser = asyncHandler(async(req, res) =>{
+  return res 
+  .status(200)
+  .json(200 , req.user , "current user fetched successfully ")
+})
+
+const updateAccountDetails = asyncHandler ( async(req, res) => {
+  const {fullName , email } = req.body 
+  if (!fullName || !email ){
+    throw new ApiError( 400 , " all fields are required")
+  }
+
+  const user =  User.findByIdAndUpdate(
+    req.user?._id ,
+    {
+      $set: {
+        fullName : fullName , 
+        email : email 
+      }
+    } ,
+    {new: true } 
+     ).select("-passsword") // chaining 
+
+     return res 
+     .status (200)
+     .json( new ApiResponse ( 200 , user , "Account details updated successfully "))
+})
 
 
+const updateUserAvator =  asyncHandler ( async (req, res ) => {
+  const avatorlocalpath = req.file?.path 
+  if(!avatorlocalpath){
+    throw new ApiError (400 , " avator file is missing" )
+  }
+  const avator = await uploadOnCloudiary(avatorlocalpath)
 
+  if(!avator.url){
+    throw new ApiError(400 , "error while uploading avator from cloudinary ")
+  }
+
+  await User.findByIdAndUpdate(
+    req.user?._id , {
+      $set:{
+        avator : avator.url 
+      }
+    },
+    {new: true } 
+     ).select("-passsword") 
+     return res 
+     .status (200)
+     .json( new ApiResponse ( 200 , user , "Account details updated successfully "))
+  }
+  )
+
+  const updateUsercover  =  asyncHandler ( async (req, res ) => {
+    const coverlocalpath = req.file?.path 
+    if(!coverlocalpath){
+      throw new ApiError (400 , " avator file is missing" )
+    }
+    const coverImage = await uploadOnCloudiary(coverlocalpath)
+  
+    if(!coverImage.url){
+      throw new ApiError(400 , "error while uploading cover from cloudinary ")
+    }
+  
+    await User.findByIdAndUpdate(
+      req.user?._id , {
+        $set:{
+          coverImage : coverImage.url 
+        }
+      },
+      {new: true } 
+       ).select("-passsword") 
+       return res 
+       .status (200)
+       .json( new ApiResponse ( 200 , user , "Account details updated successfully "))
+    }
+    )
+module.exports ={registerUser , loginUser , logoutuser, refreshAccessToken , getCurrentUser , changeCurrentPassword , updateAccountDetails , updateUserAvator , updateUsercover } //module.exports =s
+
+
+/*
+res.cookie() method is used to set a cookie in the response. The method takes three parameters:
+
+name (String): The name of the cookie.
+value (String or Object): The value of the cookie. It can be a string or an object, which will be serialized as JSON.
+options (Object): An optional object that contains various settings for the cookie. Some common options include:
+
+option:--
+httpOnly (Boolean): If true, the cookie is inaccessible to client-side scripts.
+secure (Boolean): If true, the cookie will only be sent over HTTPS.
+Here's an example of using res.cookie():
+
+res.cookie('username', 'john_doe');
+
+
+res.cookie('rememberme', '1', {
+  maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+  httpOnly: true,
+  secure: true,
+});
+
+// Set a JSON cookie
+res.cookie('user', { id: 123, name: 'John' });
+In this example, the first cookie is a simple key-value pair, the second cookie has additional options like maxAge, httpOnly, and secure, and the third cookie contains a JSON object
+*/
 
 
 /*if (
